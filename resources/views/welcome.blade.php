@@ -8,8 +8,8 @@
         </p>
         @guest
             <div class="flex flex-col sm:flex-row justify-center gap-4 pt-4">
-                <a href="/login" class="inline-flex items-center justify-center px-8 py-3 text-sm font-semibold bg-white text-indigo-600 rounded-md shadow hover:bg-indigo-50">Zaloguj się</a>
-                <a href="/register" class="inline-flex items-center justify-center px-8 py-3 text-sm font-semibold bg-indigo-500 hover:bg-indigo-400 rounded-md">Zarejestruj się</a>
+                <a href="{{ route('login') }}" class="inline-flex items-center justify-center px-8 py-3 text-sm font-semibold bg-white text-indigo-600 rounded-md shadow hover:bg-indigo-50">Zaloguj się</a>
+                <a href="{{ route('register') }}" class="inline-flex items-center justify-center px-8 py-3 text-sm font-semibold bg-indigo-500 hover:bg-indigo-400 rounded-md">Zarejestruj się</a>
             </div>
         @endguest
     </div>

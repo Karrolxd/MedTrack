@@ -2,63 +2,31 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\Doctor;
+use App\Models\Patient;
+use App\Models\Role;
+use App\Models\User;
 
 class AdminDashboardController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        return view('admin.dashboard');
-    }
+        $users = User::all();
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
+        $guestRoleId = Role::firstWhere('name', 'guest')->id;
+        $guestUsers = $users->where('role_id', $guestRoleId);
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+        $countedUsers = $users->count();
+        $countedDoctors = Doctor::all()->count();
+        $countedPatients = Patient::all()->count();
+        $countedReceptionists = Patient::all()->count();
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        return view('admin.dashboard', [
+            'countedUsers' => $countedUsers,
+            'countedDoctors' => $countedDoctors,
+            'countedPatients' => $countedPatients,
+            'countedReceptionists' => $countedReceptionists,
+            'guestUsers' => $guestUsers,
+        ]);
     }
 }

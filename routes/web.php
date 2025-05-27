@@ -2,11 +2,11 @@
 
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\DoctorDashboardController;
+use App\Http\Controllers\DoctorsController;
 use App\Http\Controllers\PatientDashboardController;
 use App\Http\Controllers\ReceptionDashboardController;
 use App\Http\Controllers\RegisteredUserController;
 use App\Http\Controllers\SessionController;
-use App\Http\Middleware\RoleMiddleware;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -38,6 +38,14 @@ Route::middleware('auth')->group(function () {
     /* admin */
     Route::middleware('role:admin')->prefix('admin')->name('admin.')->group(function () {
         Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
+
+        Route::middleware('signed')->get('/users/{user}/doctors/create',
+            [DoctorsController::class, 'create'])
+            ->name('users.doctors.create');
+
+        Route::post('/users/{user}/doctors',
+            [DoctorsController::class, 'store'])
+            ->name('users.doctors.store');
     });
 });
 

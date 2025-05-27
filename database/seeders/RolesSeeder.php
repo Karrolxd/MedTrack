@@ -18,6 +18,7 @@ class RolesSeeder extends Seeder
             ['id'=>2, 'name'=>'patient'],
             ['id'=>3, 'name'=>'doctor'],
             ['id'=>4, 'name'=>'reception'],
+            ['id'=>5, 'name'=>'guest'],
         ]);
 
     }

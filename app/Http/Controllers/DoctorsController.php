@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreDoctorsRequest;
 use App\Http\Requests\UpdateDoctorsRequest;
 use App\Models\Doctor;
+use App\Models\User;
+use Illuminate\Validation\ValidationException;
 
 class DoctorsController extends Controller
 {
@@ -19,17 +21,25 @@ class DoctorsController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(User $user)
     {
-        //
+        return view('admin.create-doctor', compact('user'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreDoctorsRequest $request)
+    public function store(StoreDoctorsRequest $request, User $user)
     {
-        //
+        $data = $request->validated();
+
+        $doctor = $user->doctor()->create($data);
+
+        $user->update(['role_id' => 3]);
+
+        $doctor->specialities()->sync($data['specialities']);
+
+        return to_route('admin.dashboard')->with('success', 'Doktor dodany.');
     }
 
     /**

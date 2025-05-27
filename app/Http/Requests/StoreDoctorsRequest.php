@@ -11,7 +11,7 @@ class StoreDoctorsRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return auth()->check() && auth()->user()->role->name === 'admin';
     }
 
     /**
@@ -22,7 +22,11 @@ class StoreDoctorsRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'first_name'      => ['required', 'string', 'max:255'],
+            'last_name'       => ['required', 'string', 'max:255'],
+            'phone_number'    => ['required', 'regex:/^[0-9]{9}$/'],
+            'license_number'  => ['required', 'string', 'max:50'],
+            'specialities'    => ['required', 'array', 'min:1'],
         ];
     }
 }
