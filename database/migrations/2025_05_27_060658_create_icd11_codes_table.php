@@ -11,9 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('icd10_codes', function (Blueprint $table) {
-            $table->string('code', 10)->primary();
-            $table->string('name_pl');
+        Schema::create('icd11_codes', function (Blueprint $table) {
+            $table->string('code', 50)->primary();
+            $table->string('title')->nullable();
+            $table->text('definition')->nullable();
             $table->timestamps();
         });
     }
@@ -23,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('icd10_codes');
+        Schema::dropIfExists('icd11_codes');
     }
 };
