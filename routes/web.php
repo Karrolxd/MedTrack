@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\Doctor\DoctorDashboardController;
 use App\Http\Controllers\Doctor\DoctorsController;
 use App\Http\Controllers\Patient\PatientDashboardController;
+use App\Http\Controllers\Patient\PatientsController;
 use App\Http\Controllers\ReceptionDashboardController;
 use App\Http\Controllers\RegisteredUserController;
 use App\Http\Controllers\SessionController;
@@ -15,37 +16,50 @@ Route::get('/', function () {
 
 Route::middleware('auth')->group(function () {
     /* entry-point */
-    Route::middleware('role')->get('/dashboard', function () {
-        dd(auth()->user()->role->name);
-    })->name('dashboard');
+    Route::middleware('role')
+        ->get('/dashboard', fn () => dd(auth()->user()->role->name))
+        ->name('dashboard');
 
     /* pacjent */
-    Route::middleware('role:patient')->prefix('patient')->name('patient.')->group(function () {
-        Route::get('/dashboard', [PatientDashboardController::class, 'index'])->name('dashboard');
-    });
+    Route::middleware('role:patient')
+        ->prefix('patient')->name('patient.')->group(function () {
+            Route::get('/dashboard', [PatientDashboardController::class, 'index'])->name('dashboard');
+        });
 
     /* lekarz */
-    Route::middleware('role:doctor')->prefix('doctor')->name('doctor.')->group(function () {
-        Route::get('/dashboard', [DoctorDashboardController::class, 'index'])->name('dashboard');
-    });
+    Route::middleware('role:doctor')
+        ->prefix('doctor')->name('doctor.')->group(function () {
+            Route::get('/dashboard', [DoctorDashboardController::class, 'index'])->name('dashboard');
+        });
 
     /* recepcjonista */
-    Route::middleware('role:reception')->prefix('reception')->name('reception.')->group(function () {
-        Route::get('/dashboard', [ReceptionDashboardController::class, 'index'])->name('dashboard');
-    });
+    Route::middleware('role:reception')
+        ->prefix('reception')->name('reception.')->group(function () {
+            Route::get('/dashboard', [ReceptionDashboardController::class, 'index'])->name('dashboard');
+        });
 
     /* admin */
-    Route::middleware('role:admin')->prefix('admin')->name('admin.')->group(function () {
-        Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
+    Route::middleware('role:admin')
+        ->prefix('admin')->name('admin.')->group(function () {
 
-        Route::middleware('signed')->get('/users/{user}/doctors/create',
-            [DoctorsController::class, 'create'])
-            ->name('users.doctors.create');
+            Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
 
-        Route::post('/users/{user}/doctors',
-            [DoctorsController::class, 'store'])
-            ->name('users.doctors.store');
-    });
+            Route::prefix('users/{user}')->name('users.')->group(function () {
+                Route::middleware('signed')
+                    ->get('/doctors/create', [DoctorsController::class, 'create'])
+                    ->name('doctors.create');
+
+                Route::post('/doctors', [DoctorsController::class, 'store'])
+                    ->name('doctors.store');
+            });
+        });
+
+    /* create/store pacjent – admin + reception */
+    Route::middleware('role:admin,reception')
+        ->prefix('patients')->name('patients.')->group(function () {
+            Route::get('/create', [PatientsController::class, 'create'])->name('create');
+            Route::post('/',       [PatientsController::class, 'store'])->name('store');
+        });
 });
 
 

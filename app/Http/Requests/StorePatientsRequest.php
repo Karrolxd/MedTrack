@@ -11,7 +11,8 @@ class StorePatientsRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return auth()->check()
+            && in_array(auth()->user()->role->name, ['admin', 'receptionist'], true);
     }
 
     /**
@@ -22,7 +23,32 @@ class StorePatientsRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'first_name' => ['required', 'string', 'max:255'],
+            'last_name' => ['required', 'string', 'max:255'],
+
+            // 11 cyfr, unikalny w tabeli patients
+            'pesel' => ['required', 'digits:11', 'unique:patients,pesel'],
+
+            // 9 cyfr (PL) – dostosuj, jeśli przyjmujesz inny format
+            'phone' => ['nullable', 'regex:/^[0-9]{9}$/'],
+
+            'date_of_birth' => ['required', 'date', 'before:today'],
+
+            // enum z bazy: M = mężczyzna, F = kobieta, X = nieokreślono
+            'sex' => ['required', 'in:M,F,X'],
+
+            // opcjonalne dodatkowe dane – muszą być poprawnym JSON-em
+            'medical_json' => ['nullable', 'json'],
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'pesel.digits' => 'PESEL musi składać się z dokładnie 11 cyfr.',
+            'pesel.unique' => 'Pacjent z takim PESEL-em już istnieje.',
+            'phone.regex' => 'Telefon powinien zawierać 9 cyfr bez spacji i myślników.',
+            'sex.in' => 'Wybierz prawidłową wartość pola Płeć.',
         ];
     }
 }

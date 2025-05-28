@@ -14,12 +14,13 @@ class AdminDashboardController extends Controller
         $users = User::all();
 
         $guestRoleId = Role::firstWhere('name', 'guest')->id;
+        $recepcionistRoleId = Role::firstWhere('name', 'reception')->id;
         $guestUsers = $users->where('role_id', $guestRoleId);
 
         $countedUsers = $users->count();
         $countedDoctors = Doctor::all()->count();
         $countedPatients = Patient::all()->count();
-        $countedReceptionists = Patient::all()->count();
+        $countedReceptionists = $users->where('role_id', $recepcionistRoleId)->count();
 
         return view('admin.dashboard', [
             'countedUsers' => $countedUsers,

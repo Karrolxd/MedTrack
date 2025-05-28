@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StorePatientsRequest;
 use App\Http\Requests\UpdatePatientsRequest;
 use App\Models\Patient;
+use Illuminate\Support\Facades\Crypt;
 
 class PatientsController extends Controller
 {
@@ -22,7 +23,7 @@ class PatientsController extends Controller
      */
     public function create()
     {
-        //
+        return view('patient.create');
     }
 
     /**
@@ -30,7 +31,14 @@ class PatientsController extends Controller
      */
     public function store(StorePatientsRequest $request)
     {
-        //
+        $patient = Patient::create(
+            $request->safe()->except('medical_json') + [
+                'encrypted_medical_json' => encrypt($request->medical_json),
+            ]
+        );
+
+        return to_route('dashboard')
+            ->with('success', 'Pacjent został dodany.');
     }
 
     /**

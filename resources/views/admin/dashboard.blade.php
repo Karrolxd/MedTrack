@@ -51,6 +51,6 @@
     <div class="flex flex-wrap gap-4">
         <a href="#" class="text-sm text-white bg-emerald-600 hover:bg-emerald-700 px-4 py-2 rounded-md">+ Nowy użytkownik</a>
         <a href="#" class="text-sm text-white bg-emerald-600 hover:bg-emerald-700 px-4 py-2 rounded-md">+ Nowy lekarz</a>
-        <a href="#" class="text-sm text-white bg-emerald-600 hover:bg-emerald-700 px-4 py-2 rounded-md">+ Nowy pacjent</a>
+        <a href="{{ route('patients.create') }}" class="text-sm text-white bg-emerald-600 hover:bg-emerald-700 px-4 py-2 rounded-md">+ Nowy pacjent</a>
     </div>
 </x-layout>
