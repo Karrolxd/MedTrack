@@ -22,24 +22,28 @@
     {{-- Sekcja „Połącz konto z profilem” --}}
     <x-section-heading>Połącz istniejące konto z profilem</x-section-heading>
     <x-panel class="space-y-4">
-        @foreach($guestUsers as $user)
-            <div class="border rounded-lg p-4 flex items-center justify-between">
-                <div>
-                    <p class="font-semibold">{{ $user->email }}</p>
-                    <p class="text-xs text-gray-500">Brak przypisanego profilu</p>
-                </div>
-                <div class="flex gap-2">
-                    <a href="{{ URL::signedRoute('admin.users.doctors.create', $user) }}"
-                       class="text-xs text-emerald-600 hover:underline">
-                        + Lekarz
-                    </a>
+        @if(! $guestUsers->count())
+            <p class="text-xl text-gray-500">Brak użytkowników do przypisania</p>
+        @else
+            @foreach($guestUsers as $user)
+                <div class="border rounded-lg p-4 flex items-center justify-between">
+                    <div>
+                        <p class="font-semibold">{{ $user->email }}</p>
+                        <p class="text-xs text-gray-500">Brak przypisanego profilu</p>
+                    </div>
+                    <div class="flex gap-2">
+                        <a href="{{ URL::signedRoute('admin.users.doctors.create', $user) }}"
+                           class="text-xs text-emerald-600 hover:underline">
+                            + Lekarz
+                        </a>
 
-                    <a href="#" class="text-xs text-emerald-600 hover:underline">+ Pacjent</a>
-                    <a href="#" class="text-xs text-emerald-600 hover:underline">+ Recepcja</a>
-                    <a href="#" class="text-xs text-emerald-600 hover:underline">+ Admin</a>
+                        <a href="#" class="text-xs text-emerald-600 hover:underline">+ Pacjent</a>
+                        <a href="#" class="text-xs text-emerald-600 hover:underline">+ Recepcja</a>
+                        <a href="#" class="text-xs text-emerald-600 hover:underline">+ Admin</a>
+                    </div>
                 </div>
-            </div>
-        @endforeach
+            @endforeach
+        @endif
     </x-panel>
 
     {{-- Szybkie akcje --}}

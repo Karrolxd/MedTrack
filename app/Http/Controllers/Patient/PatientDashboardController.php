@@ -1,17 +1,18 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Patient;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class DoctorDashboardController extends Controller
+class PatientDashboardController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view('doctor.dashboard');
+        return view('patient.dashboard');
     }
 
     /**

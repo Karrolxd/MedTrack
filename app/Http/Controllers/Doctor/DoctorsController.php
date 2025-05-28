@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Doctor;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreDoctorsRequest;
 use App\Http\Requests\UpdateDoctorsRequest;
 use App\Models\Doctor;
 use App\Models\User;
-use Illuminate\Validation\ValidationException;
 
 class DoctorsController extends Controller
 {
@@ -35,7 +35,8 @@ class DoctorsController extends Controller
 
         $doctor = $user->doctor()->create($data);
 
-        $user->update(['role_id' => 3]);
+        $user->role_id = 3;
+        $user->save();
 
         $doctor->specialities()->sync($data['specialities']);
 

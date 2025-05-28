@@ -1,13 +1,12 @@
 <?php
 
 use App\Http\Controllers\AdminDashboardController;
-use App\Http\Controllers\DoctorDashboardController;
-use App\Http\Controllers\DoctorsController;
-use App\Http\Controllers\PatientDashboardController;
+use App\Http\Controllers\Doctor\DoctorDashboardController;
+use App\Http\Controllers\Doctor\DoctorsController;
+use App\Http\Controllers\Patient\PatientDashboardController;
 use App\Http\Controllers\ReceptionDashboardController;
 use App\Http\Controllers\RegisteredUserController;
 use App\Http\Controllers\SessionController;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
