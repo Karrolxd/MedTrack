@@ -38,8 +38,16 @@
                         </a>
 
                         <a href="#" class="text-xs text-emerald-600 hover:underline">+ Pacjent</a>
-                        <a href="#" class="text-xs text-emerald-600 hover:underline">+ Recepcja</a>
-                        <a href="#" class="text-xs text-emerald-600 hover:underline">+ Admin</a>
+
+                        <a href="{{ URL::signedRoute('admin.users.role.assign', [$user, 'role' => 'reception']) }}"
+                           class="text-xs text-emerald-600 hover:underline">
+                            + Recepcja
+                        </a>
+
+                        <a href="{{ URL::signedRoute('admin.users.role.assign', [$user, 'role' => 'admin']) }}"
+                           class="text-xs text-indigo-600 hover:underline">
+                            + Admin
+                        </a>
                     </div>
                 </div>
             @endforeach

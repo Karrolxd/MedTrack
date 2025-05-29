@@ -1,6 +1,7 @@
 <?php
 
-use App\Http\Controllers\AdminDashboardController;
+use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Controllers\Admin\AssignUserRoleController;
 use App\Http\Controllers\Doctor\DoctorDashboardController;
 use App\Http\Controllers\Doctor\DoctorsController;
 use App\Http\Controllers\Patient\PatientDashboardController;
@@ -17,7 +18,7 @@ Route::get('/', function () {
 Route::middleware('auth')->group(function () {
     /* entry-point */
     Route::middleware('role')
-        ->get('/dashboard', fn () => dd(auth()->user()->role->name))
+        ->get('/dashboard', fn() => dd(auth()->user()->role->name))
         ->name('dashboard');
 
     /* pacjent */
@@ -52,13 +53,18 @@ Route::middleware('auth')->group(function () {
                 Route::post('/doctors', [DoctorsController::class, 'store'])
                     ->name('doctors.store');
             });
+
+            Route::middleware(['role:admin', 'signed'])
+                ->get('/admin/users/{user}/role/{role}/assign', AssignUserRoleController::class)
+                ->whereIn('role', ['admin', 'reception'])
+                ->name('users.role.assign');
         });
 
     /* create/store pacjent – admin + reception */
     Route::middleware('role:admin,reception')
         ->prefix('patients')->name('patients.')->group(function () {
             Route::get('/create', [PatientsController::class, 'create'])->name('create');
-            Route::post('/',       [PatientsController::class, 'store'])->name('store');
+            Route::post('/', [PatientsController::class, 'store'])->name('store');
         });
 });
 
